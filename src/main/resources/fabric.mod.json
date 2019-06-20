@@ -1,0 +1,21 @@
+{
+  "schemaVersion": 1,
+  "id": "valar",
+  "version": "1.0.0",
+  
+  "name": "ValarLib",
+  "description": "Library for Team Valar mods",
+  "authors": [
+    "Draylar",
+    "Valoeghese"
+  ],
+  
+  "license": "All Rights Reserved",
+  
+  "environment": "*",
+  
+  "requires": {
+    "fabricloader": ">=0.4.0",
+    "fabric": "*"
+  }
+}
