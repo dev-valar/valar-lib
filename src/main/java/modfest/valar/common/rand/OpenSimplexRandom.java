@@ -1,6 +1,6 @@
 package modfest.valar.common.rand;
 
-import modfest.valar.common.CommonMathUtils;
+import modfest.valar.common.ValarMathUtils;
 import modfest.valar.common.noise.OpenSimplexNoise;
 
 public class OpenSimplexRandom implements NoiseRandom<OpenSimplexNoise, OpenSimplexRandom>
@@ -14,8 +14,8 @@ public class OpenSimplexRandom implements NoiseRandom<OpenSimplexNoise, OpenSimp
 	private OpenSimplexRandom(long seed, double zoom, double startX, double startY)
 	{
 		parent = new OpenSimplexNoise(seed);
-		int x = CommonMathUtils.floor(startX / zoom);
-		int y = CommonMathUtils.floor(startY / zoom);
+		int x = ValarMathUtils.floor(startX / zoom);
+		int y = ValarMathUtils.floor(startY / zoom);
 		
 		baseSeed = (long) (266587864571D * (0.2D + parent.eval(x, y)));
 		
