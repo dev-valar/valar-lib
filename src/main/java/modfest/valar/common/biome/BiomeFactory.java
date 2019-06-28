@@ -17,15 +17,16 @@ import net.minecraft.world.gen.feature.MineshaftFeature;
 import net.minecraft.world.gen.feature.MineshaftFeatureConfig;
 import net.minecraft.world.gen.surfacebuilder.SurfaceBuilder;
 import net.minecraft.world.gen.surfacebuilder.TernarySurfaceConfig;
+import net.minecraft.world.biome.Biome;
 
 public class BiomeFactory
 {
 	private String baseBiome = (String)null;
-	private Biome parent;
+	private ExtendedBiome parent;
 	
 	private SurfaceBuilder<TernarySurfaceConfig> surfaceBuilder = SurfaceBuilder.DEFAULT;
 
-	public Biome.TBOSurfaceConfig surfaceConfig = new Biome.TBOSurfaceConfig(Blocks.GRASS_BLOCK.getDefaultState(), Blocks.DIRT.getDefaultState(), Blocks.GRAVEL.getDefaultState());
+	public ExtendedBiome.TBOSurfaceConfig surfaceConfig = new ExtendedBiome.TBOSurfaceConfig(Blocks.GRASS_BLOCK.getDefaultState(), Blocks.DIRT.getDefaultState(), Blocks.GRAVEL.getDefaultState());
 	
 	private float temperature = 0.5F;
 	private float downfall = 0.5F;
@@ -43,12 +44,10 @@ public class BiomeFactory
 	
 	public final float baseHeight;
 	public final float scale;
-	public final Biome.Precipitation precipitation;
-	public final Biome.Category category;
+	public final ExtendedBiome.Precipitation precipitation;
+	public final ExtendedBiome.Category category;
 	
-	private RiverType riverType = RiverType.WATER;
-	
-	private BiomeFactory(float baseHeight, float scale, Biome.Category category, Biome.Precipitation precipitation)
+	private BiomeFactory(float baseHeight, float scale, ExtendedBiome.Category category, ExtendedBiome.Precipitation precipitation)
 	{
 		this.baseHeight = baseHeight;
 		this.scale = scale;
@@ -58,13 +57,13 @@ public class BiomeFactory
 
 	//==================================================//
 
-	public static BiomeFactory create(float baseHeight, float scale, Biome.Category category)
+	public static BiomeFactory create(float baseHeight, float scale, ExtendedBiome.Category category)
 	{
 		BiomeFactory factory = create(baseHeight, scale, Biome.Precipitation.RAIN, category);
 		return factory;
 	}
 	
-	public static BiomeFactory create(float baseHeight, float scale, Biome.Precipitation precipitation, Biome.Category category)
+	public static BiomeFactory create(float baseHeight, float scale, ExtendedBiome.Precipitation precipitation, ExtendedBiome.Category category)
 	{
 		BiomeFactory factory = new BiomeFactory(baseHeight, scale, category, precipitation);
 		return factory;
@@ -117,12 +116,6 @@ public class BiomeFactory
 		return this;
 	}
 	
-	public BiomeFactory setRiverType(RiverType riverType)
-	{
-		this.riverType = riverType;
-		return this;
-	}
-	
 	public BiomeFactory setCustomSkyColour(int colour)
 	{
 		this.customSkyColour = colour;
@@ -131,9 +124,9 @@ public class BiomeFactory
 	
 	//==================================================//
 
-	public Biome.Settings build()
+	public ExtendedBiome.Settings build()
 	{
-		return new Biome.Settings().configureSurfaceBuilder(this.surfaceBuilder, this.surfaceConfig).precipitation(this.precipitation).category(this.category).depth(this.baseHeight).scale(this.scale).temperature(this.temperature).downfall(this.downfall).waterColor(this.waterColour).waterFogColor(this.waterFogColour).parent(this.baseBiome);
+		return new ExtendedBiome.Settings().configureSurfaceBuilder(this.surfaceBuilder, this.surfaceConfig).precipitation(this.precipitation).category(this.category).depth(this.baseHeight).scale(this.scale).temperature(this.temperature).downfall(this.downfall).waterColor(this.waterColour).waterFogColor(this.waterFogColour).parent(this.baseBiome);
 	}
 
 	public int getGrassColour()
@@ -154,11 +147,6 @@ public class BiomeFactory
 		return this.spawnChance;
 	}
 	
-	public RiverType getRiverType()
-	{
-		return riverType;
-	}
-	
 	public boolean hasCustomSkyColour()
 	{
 		return this.customSkyColour != -1;
@@ -171,12 +159,12 @@ public class BiomeFactory
 	
 	//==================================================//
 	
-	public void setParent(Biome parent)
+	public void setParent(ExtendedBiome parent)
 	{
 		this.parent = parent;
 	}
 	
-	public Biome getParent()
+	public ExtendedBiome getParent()
 	{
 		return this.parent;
 	}
@@ -204,8 +192,8 @@ public class BiomeFactory
 
 	public static class BiomePopulator
 	{
-		public final Biome parent;
-		public BiomePopulator(Biome parent)
+		public final ExtendedBiome parent;
+		public BiomePopulator(ExtendedBiome parent)
 		{
 			this.parent = parent;
 		}
@@ -232,15 +220,8 @@ public class BiomeFactory
 			{
 				int n1 = MathHelper.floor(tpc * (feature.getRight().floatValue() / this.weightSum));
 				
-				this.parent.addFeature(GenerationStep.Feature.VEGETAL_DECORATION, Biome.configureFeature(feature.getLeft(), FeatureConfig.DEFAULT, Decorator.COUNT_EXTRA_HEIGHTMAP, new CountExtraChanceDecoratorConfig(n1, this.extraTreeChance, this.extraTreeCount)));
+				this.parent.addFeature(GenerationStep.Feature.VEGETAL_DECORATION, ExtendedBiome.configureFeature(feature.getLeft(), FeatureConfig.DEFAULT, Decorator.COUNT_EXTRA_HEIGHTMAP, new CountExtraChanceDecoratorConfig(n1, this.extraTreeChance, this.extraTreeCount)));
 			}
 		}
-	}
-	
-	public static enum RiverType
-	{
-		NONE,
-		WATER,
-		ICY;
 	}
 }

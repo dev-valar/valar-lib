@@ -7,12 +7,12 @@ import net.minecraft.block.BlockState;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.gen.surfacebuilder.TernarySurfaceConfig;
 
-public abstract class Biome extends net.minecraft.world.biome.Biome
+public abstract class ExtendedBiome extends net.minecraft.world.biome.Biome
 {
 	public final BiomeFactory factory;
 	public final BiomePopulator populator;
 	
-	protected Biome(BiomeFactory biomeFactory)
+	protected ExtendedBiome(BiomeFactory biomeFactory)
 	{
 		super(biomeFactory.build());
 		
