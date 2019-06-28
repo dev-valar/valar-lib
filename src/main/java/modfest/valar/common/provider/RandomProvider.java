@@ -1,15 +1,28 @@
 package modfest.valar.common.provider;
 
-import java.util.function.DoubleFunction;
+import java.util.Random;
 
-import modfest.valar.common.rand.IRandom;
-
-public interface RandomProvider<T extends IRandom<T>> extends DoubleFunction<T>
+public class RandomProvider
 {
-	default public T apply(double d)
+	private final long seed;
+	private long x, y = 0;
+	
+	public RandomProvider(long seed)
 	{
-		return this.createRandom(d);
+		this.seed = seed;
 	}
 	
-	public T createRandom(double zoom);
+	public RandomProvider position(long x, long y)
+	{
+		this.x = x;
+		this.y = y;
+		
+		return this;
+	}
+	
+	public Random createRandom(long zoom)
+	{
+		return new Random(seed + 535651152L * (x / zoom) + 813413134L * (y / zoom));
+	}
+
 }
