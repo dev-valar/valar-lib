@@ -52,22 +52,22 @@ public abstract class AbstractTropicalTreeFeature extends AbstractTreeFeature<De
 
 
 	@Override
-	public void setWorldBlockState(Set<BlockPos> set, ModifiableTestableWorld world, BlockPos pos, BlockState state)
+	public void setWorldBlockState(Set<BlockPos> set, ModifiableTestableWorld world, BlockPos pos, BlockState state, MutableIntBoundingBox mibb)
 	{
 		if ((canTreeReplace(world, pos) || world.testBlockState(pos, genPredicate)))
 		{
-			super.setBlockState(set, world, pos, state, new MutableIntBoundingBox());
+			super.setBlockState(set, world, pos, state, mibb);
 		}
 	}
 
 	@Override
-	protected boolean generate(Set<BlockPos> set_1, ModifiableTestableWorld world, Random rand, BlockPos blockPos_1, MutableIntBoundingBox mutableIntBoundingBox)
+	protected boolean generate(Set<BlockPos> set_1, ModifiableTestableWorld world, Random rand, BlockPos blockPos_1, MutableIntBoundingBox mibb)
 	{
 		int height = heightMin + rand.nextInt(heightDelta);
 		
 		blockPos_1 = world.getTopPosition(Heightmap.Type.OCEAN_FLOOR, blockPos_1);
 
-		BlockGenerator generator = new BlockGenerator(world, set_1);
+		BlockGenerator generator = new BlockGenerator(world, set_1, mibb);
 		
 		if (blockPos_1.getY() >= 1 && blockPos_1.getY() + height + 1 <= 256 && 
 				(this.isWaterFeature || !isWater(world, blockPos_1)) && 

@@ -11,6 +11,7 @@ import net.minecraft.block.BlockState;
 import net.minecraft.block.Blocks;
 import net.minecraft.tag.BlockTags;
 import net.minecraft.util.math.BlockPos;
+import net.minecraft.util.math.MutableIntBoundingBox;
 import net.minecraft.world.ModifiableTestableWorld;
 import net.minecraft.world.TestableWorld;
 
@@ -18,13 +19,15 @@ public class BlockGenerator
 {
 	protected ModifiableTestableWorld world;
 	public Set<BlockPos> set;
+	private MutableIntBoundingBox mibb;
 	protected boolean canGenerate = true;
 	protected List<Triple<BlockPos, BlockState, Boolean>> gen = new ArrayList<>();
 
-	public BlockGenerator(ModifiableTestableWorld world, Set<BlockPos> set)
+	public BlockGenerator(ModifiableTestableWorld world, Set<BlockPos> set, MutableIntBoundingBox mibb)
 	{
 		this.world = world;
 		this.set = set;
+		this.mibb = mibb;
 	}
 
 	public void setBlock(BlockPos pos, BlockState state, boolean ignore)
@@ -48,7 +51,7 @@ public class BlockGenerator
 			for (Triple<BlockPos, BlockState, Boolean> pair : this.gen)
 				if (pair.getC())
 				{
-					generator.setWorldBlockState(this.set, this.world, pair.getA(), pair.getB());
+					generator.setWorldBlockState(this.set, this.world, pair.getA(), pair.getB(), mibb);
 				}
 
 			return true;
